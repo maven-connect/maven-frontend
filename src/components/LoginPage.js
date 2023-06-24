@@ -7,16 +7,13 @@ export default function LoginPage() {
     script.defer = true;
     script.onload = () => {
       window.google.accounts.id.initialize({
-        client_id: '',
+        client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
         callback: handleCredentialResponse,
       });
-      google.accounts.id.renderButton(
-        document.getElementById('googleButton'),
-        {
-          theme: 'outline',
-          size: 'large',
-        } // customization attributes
-      );
+      google.accounts.id.renderButton(document.getElementById('googleButton'), {
+        theme: 'outline',
+        size: 'large',
+      });
     };
     document.body.appendChild(script);
   }, []);
