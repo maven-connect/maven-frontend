@@ -1,5 +1,9 @@
+import {useRouter} from 'next/router';
 import {useEffect} from 'react';
+
 export default function LoginPage() {
+  const router = useRouter();
+
   useEffect(() => {
     const script = document.createElement('script');
     script.src = 'https://accounts.google.com/gsi/client';
@@ -20,7 +24,20 @@ export default function LoginPage() {
 
   const handleCredentialResponse = (response) => {
     const credential = response.credential;
-    console.log(credential);
+    fetch(new URL('/google-login', process.env.NEXT_PUBLIC_BACKEND), {
+      method: 'POST',
+      body: JSON.stringify({
+        id_token: credential,
+      }),
+      credentials: 'include',
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        router.push('/dashboard');
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (

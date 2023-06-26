@@ -1,4 +1,4 @@
-const BASE_URL = '/masterbackend';
+const BASE_URL = process.env.NEXT_PUBLIC_BACKEND;
 
 const commonAPICall = async (
   PATH,
@@ -14,6 +14,7 @@ const commonAPICall = async (
     method: METHOD,
     body: BODY,
     headers: headers,
+    credentials: 'include',
   });
 
   return response;
@@ -21,7 +22,11 @@ const commonAPICall = async (
 
 const getAPI = async (PATH) => {
   const response = await commonAPICall(PATH);
-  response.data = await response.json();
+  try {
+    response.data = await response.json();
+  } catch (err) {
+    console.log(err);
+  }
   return response;
 };
 
@@ -47,9 +52,11 @@ const deleteAPI = async (PATH) => {
 };
 
 const getProfile = async () => {
-  const response = await getAPI('/api/profile/');
+  const response = await getAPI('/profile');
   if (!response.ok) {
-    throw new Error(`Request failed with status ${response.status}`);
+    throw new Error(
+      `Request failed with status ${response.status}. Message: ${response.data.error}`
+    );
   }
   return response;
 };

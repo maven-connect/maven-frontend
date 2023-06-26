@@ -15,10 +15,9 @@ const NotLoggedInRequired = (props) => {
       dispatch(fetchProfile());
     }
   }, [dispatch, profileData, profileStatus]);
-
   if (profileStatus === 'succeeded') {
-    router.push('/');
-    return <h1>Loading...</h1>;
+    router.push('/dashboard');
+    return null;
   }
   if (profileStatus === 'failed') {
     return <>{props.children}</>;

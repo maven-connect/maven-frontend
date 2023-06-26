@@ -1,16 +1,16 @@
 import React, {useEffect} from 'react';
 import {useRouter} from 'next/router';
 import {useDispatch, useSelector} from 'react-redux';
-import {fetchProfile} from '@/features/profileSlice';
+import {fetchProfile, selectProfile} from '@/features/profileSlice';
 
-const LoginRequired = ({navStat, children}) => {
+const LoginRequired = ({children}) => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const {data: profileData, status} = useSelector((state) => state.profile);
+  const {data: profileData, status} = useSelector(selectProfile);
 
   useEffect(() => {
     dispatch(fetchProfile());
-  }, [dispatch]);
+  }, [dispatch, profileData, status]);
 
   if (status === 'loading') {
     return <h1>Loading...</h1>;

@@ -1,7 +1,7 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import {getProfile} from '@/pages/api/api';
 
-export const fetchProfile = createAsyncThunk('profile/get', async () => {
+export const fetchProfile = createAsyncThunk('profile', async () => {
   const response = await getProfile();
   return response.data;
 });
