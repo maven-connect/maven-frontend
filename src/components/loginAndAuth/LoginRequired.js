@@ -9,7 +9,9 @@ const LoginRequired = ({children}) => {
   const {data: profileData, status} = useSelector(selectProfile);
 
   useEffect(() => {
+    if(status==="idle"){
     dispatch(fetchProfile());
+    }
   }, [dispatch, profileData, status]);
 
   if (status === 'loading') {
