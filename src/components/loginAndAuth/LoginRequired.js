@@ -2,6 +2,7 @@ import React, {useEffect} from 'react';
 import {useRouter} from 'next/router';
 import {useDispatch, useSelector} from 'react-redux';
 import {fetchProfile, selectProfile} from '@/features/profileSlice';
+import Loader from '../UI/Loader';
 
 const LoginRequired = ({children}) => {
   const router = useRouter();
@@ -15,7 +16,7 @@ const LoginRequired = ({children}) => {
   }, [dispatch, profileData, status]);
 
   if (status === 'loading') {
-    return <h1>Loading...</h1>;
+    return <Loader/>;
   }
 
   if (profileData && status === 'failed') {
