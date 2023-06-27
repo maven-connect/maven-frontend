@@ -2,19 +2,19 @@ const BASE_URL = process.env.NEXT_PUBLIC_BACKEND;
 
 const commonAPICall = async (
   PATH,
-  METHOD = "GET",
+  METHOD = 'GET',
   BODY = null,
   headers = {
-    accept: "*/*",
-    "Content-Type": "application/json",
+    accept: '*/*',
+    'Content-Type': 'application/json',
   }
 ) => {
-  var FULLPATH = BASE_URL + PATH;
+  var FULLPATH = new URL(PATH, BASE_URL).toString();
   const response = await fetch(FULLPATH, {
     method: METHOD,
     body: BODY,
     headers: headers,
-    credentials: "include",
+    credentials: 'include',
   });
 
   return response;
@@ -32,7 +32,7 @@ const getAPI = async (PATH) => {
 
 const postAPI = async (PATH, DATA) => {
   var serializedData = JSON.stringify(DATA);
-  const response = await commonAPICall(PATH, "POST", serializedData);
+  const response = await commonAPICall(PATH, 'POST', serializedData);
   try {
     response.data = await response.json();
   } catch (err) {
@@ -42,7 +42,7 @@ const postAPI = async (PATH, DATA) => {
 };
 
 const deleteAPI = async (PATH) => {
-  const response = await commonAPICall(PATH, "DELETE");
+  const response = await commonAPICall(PATH, 'DELETE');
   try {
     response.data = await response.json();
   } catch (err) {
@@ -52,7 +52,7 @@ const deleteAPI = async (PATH) => {
 };
 
 const getProfile = async () => {
-  const response = await getAPI("/profile");
+  const response = await getAPI('/profile');
   if (!response.ok) {
     throw new Error(
       `Request failed with status ${response.status}. Message: ${response.data.error}`
@@ -62,14 +62,14 @@ const getProfile = async () => {
 };
 
 const loginSubmit = async (email, password) => {
-  const response = await postAPI("/login", {
+  const response = await postAPI('/login', {
     email: email,
     password: password,
   });
   return response;
 };
 const registerSubmit = async (email, password) => {
-  const response = await postAPI("/register-user", {
+  const response = await postAPI('/register-user', {
     email: email,
     password: password,
   });

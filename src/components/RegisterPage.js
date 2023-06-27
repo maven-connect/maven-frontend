@@ -1,9 +1,10 @@
-import { fetchProfile } from "@/features/profileSlice";
-import { registerSubmit } from "@/pages/api/api";
-import { useRouter } from "next/router";
-import { useState } from "react";
-import { Toaster, toast } from "react-hot-toast";
-import { useDispatch } from "react-redux";
+import {fetchProfile} from '@/features/profileSlice';
+import {registerSubmit} from '@/pages/api/api';
+import Link from 'next/link';
+import {useRouter} from 'next/router';
+import {useState} from 'react';
+import {Toaster, toast} from 'react-hot-toast';
+import {useDispatch} from 'react-redux';
 
 export default function RegisterPage() {
   const [email, setEmail] = useState();
@@ -13,11 +14,11 @@ export default function RegisterPage() {
 
   const registerClick = () => {
     registerSubmit(email, password).then((res) => {
-      console.log(res);
       if (res.ok) {
-        router.push("/login")
+        router.push('/login');
       } else {
-        toast.error("incorrect password or email");
+        console.log(res);
+        // toast.error(res);
       }
     });
   };
@@ -32,20 +33,18 @@ export default function RegisterPage() {
             src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
             alt="Your Company"
           />
-          <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+          <h2 className="mt-5 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
             Create new account
           </h2>
         </div>
 
-        <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+        <div className="mt-7 sm:mx-auto sm:w-full sm:max-w-sm">
           <form
             className="space-y-6"
             action="#"
             method="POST"
             onSubmit={(e) => {
               e.preventDefault();
-              console.log("yoo");
-              console.log(email, password);
               registerClick();
             }}
           >
@@ -100,6 +99,14 @@ export default function RegisterPage() {
               </button>
             </div>
           </form>
+          <div className="flex flex-col gap-2 mt-10">
+            <p className="text-gray-500 ">Have an account?</p>
+            <Link href={'/login'}>
+              <button className="flex w-full justify-center rounded-md bg-green-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                Sign In
+              </button>
+            </Link>
+          </div>
         </div>
       </div>
     </>

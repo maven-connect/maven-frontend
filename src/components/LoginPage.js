@@ -1,9 +1,10 @@
-import { fetchProfile } from "@/features/profileSlice";
-import { loginSubmit } from "@/pages/api/api";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import { Toaster, toast } from "react-hot-toast";
-import { useDispatch } from "react-redux";
+import {fetchProfile} from '@/features/profileSlice';
+import {loginSubmit} from '@/pages/api/api';
+import Link from 'next/link';
+import {useRouter} from 'next/router';
+import {useEffect, useState} from 'react';
+import {Toaster, toast} from 'react-hot-toast';
+import {useDispatch} from 'react-redux';
 
 export default function LoginPage() {
   const [email, setEmail] = useState();
@@ -13,18 +14,17 @@ export default function LoginPage() {
 
   const loginClick = () => {
     loginSubmit(email, password).then((res) => {
-      console.log(res);
       if (res.ok) {
         dispatch(fetchProfile());
       } else {
-        toast.error("incorrect password or email")
+        toast.error('incorrect password or email');
       }
     });
   };
 
   useEffect(() => {
-    const script = document.createElement("script");
-    script.src = "https://accounts.google.com/gsi/client";
+    const script = document.createElement('script');
+    script.src = 'https://accounts.google.com/gsi/client';
     script.async = true;
     script.defer = true;
     script.onload = () => {
@@ -32,9 +32,9 @@ export default function LoginPage() {
         client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
         callback: handleCredentialResponse,
       });
-      google.accounts.id.renderButton(document.getElementById("googleButton"), {
-        theme: "outline",
-        size: "large",
+      google.accounts.id.renderButton(document.getElementById('googleButton'), {
+        theme: 'outline',
+        size: 'large',
       });
     };
     document.body.appendChild(script);
@@ -43,19 +43,19 @@ export default function LoginPage() {
   const handleCredentialResponse = async (response) => {
     const credential = response.credential;
     const res = await fetch(
-      new URL("/google-login", process.env.NEXT_PUBLIC_BACKEND),
+      new URL('/google-login', process.env.NEXT_PUBLIC_BACKEND),
       {
-        method: "POST",
+        method: 'POST',
         body: JSON.stringify({
           id_token: credential,
         }),
-        credentials: "include",
+        credentials: 'include',
       }
     );
     if (res.ok) {
       dispatch(fetchProfile());
     } else {
-      console.log("error");
+      console.log('error');
     }
   };
 
@@ -69,20 +69,18 @@ export default function LoginPage() {
             src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
             alt="Your Company"
           />
-          <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+          <h2 className="mt-5 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
             Sign in to your account
           </h2>
         </div>
 
-        <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+        <div className="mt-7 sm:mx-auto sm:w-full sm:max-w-sm">
           <form
             className="space-y-6"
             action="#"
             method="POST"
             onSubmit={(e) => {
               e.preventDefault();
-              console.log("yoo");
-              console.log(email, password);
               loginClick();
             }}
           >
@@ -145,9 +143,16 @@ export default function LoginPage() {
               </button>
             </div>
           </form>
-          <div className="flex items-center flex-col gap-4 mt-4">
-            <p className="text-center text-base font-semibold ">---</p>
+          <div className="flex items-center flex-col gap-3 mt-7">
             <button id="googleButton"></button>
+          </div>
+          <div className="flex flex-col gap-2 mt-10">
+            <p className="text-gray-500 ">Do not have an account yet?</p>
+            <Link href={'/register'}>
+              <button className="flex w-full justify-center rounded-md bg-green-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                Create Account
+              </button>
+            </Link>
           </div>
         </div>
       </div>
