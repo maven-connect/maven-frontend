@@ -1,62 +1,26 @@
 import {fetchProfile} from '@/features/profileSlice';
-import {loginSubmit} from '@/pages/api/api';
+import {registerSubmit} from '@/pages/api/api';
 import Link from 'next/link';
 import {useRouter} from 'next/router';
-import {useEffect, useState} from 'react';
+import {useState} from 'react';
 import {Toaster, toast} from 'react-hot-toast';
 import {useDispatch} from 'react-redux';
 
-export default function LoginPage() {
+export default function RegisterPage() {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const router = useRouter();
   const dispatch = useDispatch();
 
-  const loginClick = () => {
-    loginSubmit(email, password).then((res) => {
+  const registerClick = () => {
+    registerSubmit(email, password).then((res) => {
       if (res.ok) {
-        dispatch(fetchProfile());
+        router.push('/login');
       } else {
-        toast.error('incorrect password or email');
+        console.log(res);
+        // toast.error(res);
       }
     });
-  };
-
-  useEffect(() => {
-    const script = document.createElement('script');
-    script.src = 'https://accounts.google.com/gsi/client';
-    script.async = true;
-    script.defer = true;
-    script.onload = () => {
-      window.google.accounts.id.initialize({
-        client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
-        callback: handleCredentialResponse,
-      });
-      google.accounts.id.renderButton(document.getElementById('googleButton'), {
-        theme: 'outline',
-        size: 'large',
-      });
-    };
-    document.body.appendChild(script);
-  }, []);
-
-  const handleCredentialResponse = async (response) => {
-    const credential = response.credential;
-    const res = await fetch(
-      new URL('/google-login', process.env.NEXT_PUBLIC_BACKEND),
-      {
-        method: 'POST',
-        body: JSON.stringify({
-          id_token: credential,
-        }),
-        credentials: 'include',
-      }
-    );
-    if (res.ok) {
-      dispatch(fetchProfile());
-    } else {
-      console.log('error');
-    }
   };
 
   return (
@@ -70,7 +34,7 @@ export default function LoginPage() {
             alt="Your Company"
           />
           <h2 className="mt-5 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-            Sign in to your account
+            Create new account
           </h2>
         </div>
 
@@ -81,7 +45,7 @@ export default function LoginPage() {
             method="POST"
             onSubmit={(e) => {
               e.preventDefault();
-              loginClick();
+              registerClick();
             }}
           >
             <div>
@@ -112,14 +76,6 @@ export default function LoginPage() {
                 >
                   Password
                 </label>
-                <div className="text-sm">
-                  <a
-                    href="#"
-                    className="font-semibold text-indigo-600 hover:text-indigo-500"
-                  >
-                    Forgot password?
-                  </a>
-                </div>
               </div>
               <div className="mt-2">
                 <input
@@ -139,18 +95,15 @@ export default function LoginPage() {
                 type="submit"
                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
-                Sign in
+                Register
               </button>
             </div>
           </form>
-          <div className="flex items-center flex-col gap-3 mt-7">
-            <button id="googleButton"></button>
-          </div>
           <div className="flex flex-col gap-2 mt-10">
-            <p className="text-gray-500 ">Do not have an account yet?</p>
-            <Link href={'/register'}>
+            <p className="text-gray-500 ">Have an account?</p>
+            <Link href={'/login'}>
               <button className="flex w-full justify-center rounded-md bg-green-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                Create Account
+                Sign In
               </button>
             </Link>
           </div>
