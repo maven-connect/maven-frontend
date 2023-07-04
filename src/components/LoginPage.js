@@ -1,10 +1,10 @@
-import {fetchProfile} from '@/features/profileSlice';
-import {loginSubmit} from '@/pages/api/api';
-import Link from 'next/link';
-import {useRouter} from 'next/router';
-import {useEffect, useState} from 'react';
-import {Toaster, toast} from 'react-hot-toast';
-import {useDispatch} from 'react-redux';
+import {fetchProfile} from "@/features/profileSlice";
+import {googeLogin, loginSubmit} from "@/pages/api/api";
+import Link from "next/link";
+import {useRouter} from "next/router";
+import {useEffect, useState} from "react";
+import {Toaster, toast} from "react-hot-toast";
+import {useDispatch} from "react-redux";
 
 export default function LoginPage() {
   const [email, setEmail] = useState();
@@ -17,14 +17,14 @@ export default function LoginPage() {
       if (res.ok) {
         dispatch(fetchProfile());
       } else {
-        toast.error('incorrect password or email');
+        toast.error("incorrect password or email");
       }
     });
   };
 
   useEffect(() => {
-    const script = document.createElement('script');
-    script.src = 'https://accounts.google.com/gsi/client';
+    const script = document.createElement("script");
+    script.src = "https://accounts.google.com/gsi/client";
     script.async = true;
     script.defer = true;
     script.onload = () => {
@@ -32,31 +32,24 @@ export default function LoginPage() {
         client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
         callback: handleCredentialResponse,
       });
-      google.accounts.id.renderButton(document.getElementById('googleButton'), {
-        theme: 'outline',
-        size: 'large',
+      google.accounts.id.renderButton(document.getElementById("googleButton"), {
+        theme: "outline",
+        size: "large",
       });
     };
     document.body.appendChild(script);
   }, []);
 
-  const handleCredentialResponse = async (response) => {
+  const handleCredentialResponse = (response) => {
     const credential = response.credential;
-    const res = await fetch(
-      new URL('/google-login', process.env.NEXT_PUBLIC_BACKEND),
-      {
-        method: 'POST',
-        body: JSON.stringify({
-          id_token: credential,
-        }),
-        credentials: 'include',
+
+    googeLogin(credential).then((res) => {
+      if (res.ok) {
+        dispatch(fetchProfile());
+      } else {
+        toast.error(res.data.error);
       }
-    );
-    if (res.ok) {
-      dispatch(fetchProfile());
-    } else {
-      console.log('error');
-    }
+    });
   };
 
   return (
@@ -148,7 +141,7 @@ export default function LoginPage() {
           </div>
           <div className="flex flex-col gap-2 mt-10">
             <p className="text-gray-500 ">Do not have an account yet?</p>
-            <Link href={'/register'}>
+            <Link href={"/register"}>
               <button className="flex w-full justify-center rounded-md bg-green-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                 Create Account
               </button>
