@@ -17,7 +17,7 @@ import {
 } from "@mantine/core";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchGroups, selectGroups } from "@/features/groupSlice";
-import Loader from "./Loader";
+import PageLoader from "./PageLoader";
 import {
   IconChevronDown,
   IconLogout,
@@ -118,7 +118,7 @@ export default function AppShellComp({ children }) {
   }, [dispatch]);
 
   if (status === "loading") {
-    return <Loader />;
+    return <PageLoader />;
   }
 
   const mockdata = [

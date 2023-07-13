@@ -3,7 +3,7 @@ import {useRouter} from "next/router";
 import {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchProfile, selectProfile} from "@/features/profileSlice";
-import Loader from "../UI/Loader";
+import PageLoader from "../UI/PageLoader";
 
 const NotLoggedInRequired = (props) => {
   const router = useRouter();
@@ -24,7 +24,7 @@ const NotLoggedInRequired = (props) => {
   if (profileStatus === "failed") {
     return <>{props.children}</>;
   }
-  return <Loader />;
+  return <PageLoader />;
 };
 
 export default NotLoggedInRequired;

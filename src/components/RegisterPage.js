@@ -1,10 +1,19 @@
-import {fetchProfile} from '@/features/profileSlice';
-import {registerSubmit} from '@/pages/api/api';
-import Link from 'next/link';
-import {useRouter} from 'next/router';
-import {useState} from 'react';
-import {Toaster, toast} from 'react-hot-toast';
-import {useDispatch} from 'react-redux';
+import { fetchProfile } from "@/features/profileSlice";
+import { registerSubmit } from "@/pages/api/api";
+import {
+  Button,
+  Center,
+  Flex,
+  Paper,
+  PasswordInput,
+  Text,
+  TextInput,
+} from "@mantine/core";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useState } from "react";
+import { Toaster, toast } from "react-hot-toast";
+import { useDispatch } from "react-redux";
 
 export default function RegisterPage() {
   const [email, setEmail] = useState();
@@ -15,10 +24,10 @@ export default function RegisterPage() {
   const registerClick = () => {
     registerSubmit(email, password).then((res) => {
       if (res.ok) {
-        router.push('/login');
+        router.push("/login");
       } else {
         console.log(res);
-        // toast.error(res);
+        toast.error(res.data);
       }
     });
   };
@@ -26,89 +35,67 @@ export default function RegisterPage() {
   return (
     <>
       <Toaster></Toaster>
-      <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
-        <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-          <img
-            className="mx-auto h-10 w-auto"
-            src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-            alt="Your Company"
-          />
-          <h2 className="mt-5 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-            Create new account
-          </h2>
-        </div>
-
-        <div className="mt-7 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form
-            className="space-y-6"
-            action="#"
-            method="POST"
-            onSubmit={(e) => {
-              e.preventDefault();
-              registerClick();
-            }}
-          >
+      <Center>
+        <Paper
+          w={420}
+          my={40}
+          withBorder
+          shadow="md"
+          p={30}
+          mt={30}
+          radius="md"
+        >
+          <div>
             <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium leading-6 text-gray-900"
+              <h2>Create new account</h2>
+            </div>
+
+            <div>
+              <form
+                action="#"
+                method="POST"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  registerClick();
+                }}
               >
-                Email address
-              </label>
-              <div className="mt-2">
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  onChange={(e) => setEmail(e.target.value)}
-                  autoComplete="email"
-                  required
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
-              </div>
-            </div>
+                <div>
+                  <TextInput
+                    mt={10}
+                    label="Email"
+                    type="email"
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                  />
+                </div>
 
-            <div>
-              <div className="flex items-center justify-between">
-                <label
-                  htmlFor="password"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  Password
-                </label>
-              </div>
-              <div className="mt-2">
-                <input
-                  id="password"
-                  name="password"
-                  type="password"
-                  autoComplete="current-password"
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
-              </div>
-            </div>
+                <div>
+                  <PasswordInput
+                    mt={10}
+                    label="Password"
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                  />
+                </div>
 
-            <div>
-              <button
-                type="submit"
-                className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-              >
-                Register
-              </button>
+                <div>
+                  <Flex justify={"end"}>
+                    <Button mt={10} type="submit">
+                      Register
+                    </Button>
+                  </Flex>
+                </div>
+              </form>
+              <div>
+                <Text>Have an account?</Text>
+                <Link href={"/login"}>
+                  <Button>Sign In</Button>
+                </Link>
+              </div>
             </div>
-          </form>
-          <div className="flex flex-col gap-2 mt-10">
-            <p className="text-gray-500 ">Have an account?</p>
-            <Link href={'/login'}>
-              <button className="flex w-full justify-center rounded-md bg-green-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                Sign In
-              </button>
-            </Link>
           </div>
-        </div>
-      </div>
+        </Paper>
+      </Center>
     </>
   );
 }
