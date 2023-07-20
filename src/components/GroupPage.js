@@ -10,8 +10,7 @@ import { useRouter } from "next/router";
 import { fetchGroups, selectGroups } from "@/features/groupSlice";
 import PageLoader from "./UI/PageLoader";
 
-const url = `ws://localhost:8000/ws/chat/`;
-const socket = new WebSocket(url);
+const socket = new WebSocket(process.env.NEXT_PUBLIC_BACKEND_SOCKET);
 
 export default function GroupPage({}) {
   const [SocketState, setSocketState] = useState(null);
