@@ -81,7 +81,11 @@ export default function LoginPage() {
         </Title>
         <Text color="dimmed" size="sm" align="center" mt={5}>
           Do not have an account yet?{" "}
-          <Anchor onClick={()=>router.push("/register")} size="sm" component="button">
+          <Anchor
+            onClick={() => router.push("/register")}
+            size="sm"
+            component="button"
+          >
             Create account
           </Anchor>
         </Text>
@@ -115,11 +119,14 @@ export default function LoginPage() {
               Sign in
             </Button>
           </form>
-          <Center m={5}> <Text>or</Text> </Center>
-          <div id="googleButton" ></div>
-            
+          <Center m={5}>
+            {" "}
+            <Text>or</Text>{" "}
+          </Center>
+          <Center>
+            <div id="googleButton"></div>
+          </Center>
         </Paper>
-        
       </Container>
     </>
   );

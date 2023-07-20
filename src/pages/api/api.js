@@ -68,6 +68,12 @@ const loginSubmit = async (email, password) => {
   });
   return response;
 };
+
+const logoutRequest = async () => {
+  const response = await postAPI("/logout");
+  return response;
+};
+
 const registerSubmit = async (email, password) => {
   const response = await postAPI("/register-user", {
     email: email,
@@ -99,14 +105,24 @@ const fetchUserGroups = async () => {
   return response;
 };
 
+const fetchUserMessages = async (groupName) => {
+  const response = await getAPI(`/group/${groupName}/messages`);
+  if (!response.ok) {
+    throw new Error("Failed to fetch Messages");
+  }
+  return response;
+};
+
 export {
   commonAPICall,
   getAPI,
   postAPI,
   getProfile,
   loginSubmit,
+  logoutRequest,
   registerSubmit,
   googeLogin,
   verifyProfile,
   fetchUserGroups,
+  fetchUserMessages,
 };

@@ -27,6 +27,9 @@ import {
 } from "@tabler/icons-react";
 import { LinksGroup } from "./LinksGroup";
 import { selectProfile } from "@/features/profileSlice";
+import Link from "next/link";
+import { logoutRequest } from "@/pages/api/api";
+import { useRouter } from "next/router";
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -112,10 +115,16 @@ export default function AppShellComp({ children }) {
   const { classes, theme, cx } = useStyles();
   const [opened, setOpened] = useState(false);
   const dispatch = useDispatch();
+  const router = useRouter();
 
   useEffect(() => {
     dispatch(fetchGroups());
   }, [dispatch]);
+
+  function Logout() {
+    logoutRequest();
+    router.reload();
+  }
 
   if (status === "loading") {
     return <PageLoader />;
@@ -125,7 +134,10 @@ export default function AppShellComp({ children }) {
     {
       label: "Groups",
       icon: IconUsers,
-      links: groupList.map((grp) => ({ label: grp.name, link: "/" })),
+      links: groupList.map((grp) => ({
+        label: grp.name,
+        link: `/group/${grp.name}`,
+      })),
     },
   ];
 
@@ -170,14 +182,18 @@ export default function AppShellComp({ children }) {
                 />
               </MediaQuery>
 
-              <img
-                style={{ height: "27px" }}
-                src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                alt=""
-              />
-              <Text fw={600} fz={"xl"}>
-                Maven
-              </Text>
+              <Link href={"/dashboard"} style={{ textDecoration: "none" }}>
+                <Group>
+                  <img
+                    style={{ height: "27px" }}
+                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+                    alt=""
+                  />
+                  <Text fw={600} fz={"xl"} color="black">
+                    Maven
+                  </Text>
+                </Group>
+              </Link>
             </Group>
             <Menu
               width={260}
@@ -218,6 +234,7 @@ export default function AppShellComp({ children }) {
                 <Menu.Item
                   color="red"
                   icon={<IconLogout size="0.9rem" stroke={1.5} />}
+                  onClick={() => Logout()}
                 >
                   Logout
                 </Menu.Item>

@@ -1,4 +1,4 @@
-import {useState} from "react";
+import { useState } from "react";
 import {
   Group,
   Box,
@@ -14,6 +14,7 @@ import {
   IconChevronLeft,
   IconChevronRight,
 } from "@tabler/icons-react";
+import Link from "next/link";
 
 const useStyles = createStyles((theme) => ({
   control: {
@@ -63,21 +64,15 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-export function LinksGroup({icon: Icon, label, initiallyOpened, links}) {
-  const {classes, theme} = useStyles();
+export function LinksGroup({ icon: Icon, label, links }) {
+  const { classes, theme } = useStyles();
   const hasLinks = Array.isArray(links);
-  const [opened, setOpened] = useState(initiallyOpened || false);
+  const [opened, setOpened] = useState(true);
   const ChevronIcon = theme.dir === "ltr" ? IconChevronRight : IconChevronLeft;
   const items = (hasLinks ? links : []).map((link) => (
-    <Text
-      component="a"
-      className={classes.link}
-      href={link.link}
-      key={link.label}
-      onClick={(event) => event.preventDefault()}
-    >
-      {link.label}
-    </Text>
+    <Link key={link.label} style={{ textDecoration: "none" }} href={link.link}>
+      <Text className={classes.link}>{link.label}</Text>
+    </Link>
   ));
 
   return (
@@ -87,7 +82,7 @@ export function LinksGroup({icon: Icon, label, initiallyOpened, links}) {
         className={classes.control}
       >
         <Group position="apart" spacing={0}>
-          <Box sx={{display: "flex", alignItems: "center"}}>
+          <Box sx={{ display: "flex", alignItems: "center" }}>
             <ThemeIcon variant="light" size={30}>
               <Icon size="1.1rem" />
             </ThemeIcon>
@@ -116,9 +111,9 @@ const mockdata = {
   label: "Releases",
   icon: IconCalendarStats,
   links: [
-    {label: "Upcoming releases", link: "/"},
-    {label: "Previous releases", link: "/"},
-    {label: "Releases schedule", link: "/"},
+    { label: "Upcoming releases", link: "/" },
+    { label: "Previous releases", link: "/" },
+    { label: "Releases schedule", link: "/" },
   ],
 };
 

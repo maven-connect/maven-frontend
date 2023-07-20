@@ -1,6 +1,6 @@
-import React, {useEffect} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {fetchGroups, selectGroups} from "@/features/groupSlice";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchGroups, selectGroups } from "@/features/groupSlice";
 import AppShellComp from "./UI/AppShell";
 
 export default function DashboardPage() {
@@ -9,7 +9,7 @@ export default function DashboardPage() {
 
   useEffect(() => {
     dispatch(fetchGroups());
-  }, []);
+  }, [dispatch]);
 
   return <AppShellComp>{JSON.stringify(groups.data)}</AppShellComp>;
 }

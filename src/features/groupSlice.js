@@ -1,5 +1,5 @@
-import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
-import {fetchUserGroups} from "@/pages/api/api";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { fetchUserGroups } from "@/pages/api/api";
 
 export const fetchGroups = createAsyncThunk("fetch/groups", async () => {
   const response = await fetchUserGroups();
@@ -7,7 +7,7 @@ export const fetchGroups = createAsyncThunk("fetch/groups", async () => {
 });
 
 export const groupSlice = createSlice({
-  name: "groups",
+  name: "group",
 
   initialState: {
     data: [],

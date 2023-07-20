@@ -1,13 +1,13 @@
-import React, {useEffect} from "react";
-import {useRouter} from "next/router";
-import {useDispatch, useSelector} from "react-redux";
-import {fetchProfile, selectProfile} from "@/features/profileSlice";
+import React, { useEffect } from "react";
+import { useRouter } from "next/router";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchProfile, selectProfile } from "@/features/profileSlice";
 import PageLoader from "../UI/PageLoader";
 
-const LoginRequired = ({children}) => {
+const LoginRequired = ({ children }) => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const {data: profileData, status} = useSelector(selectProfile);
+  const { data: profileData, status } = useSelector(selectProfile);
 
   useEffect(() => {
     if (status === "idle") {
