@@ -38,7 +38,7 @@ export default function GroupPage({}) {
   };
 
   useEffect(() => {
-    if (router.query.group_name && status == "succeeded") {
+    if (router.query.group_name && status === "succeeded") {
       setsocketData([]);
       dispatch(fetchMessages({ groupName: router.query.group_name }));
     }
@@ -52,7 +52,7 @@ export default function GroupPage({}) {
     return <PageLoader />;
   }
   if (
-    groupList.find((el) => el.name == router.query.group_name) === undefined
+    groupList.find((el) => el.name === router.query.group_name) === undefined
   ) {
     router.push("/dashboard");
     return null;
@@ -60,9 +60,13 @@ export default function GroupPage({}) {
 
   return (
     <AppShellComp>
-      <Flex direction={"column"} h={"100%"} justify={"flex-end"} p={"sm"}>
+      <Flex direction="column" h="100%" style={{ position: "relative" }}>
         <ChatHero socketData={socketData} chatId={router.query.group_name} />
-        <ChatInput sendMessage={sendMessage} />
+        <div style={{position:"fixed",bottom:"10px", width:"-webkit-fill-available"}}>
+          {/* The flex: 1 and overflowY: auto ensure the chat content is scrollable */}
+          {/* The ChatInput will stick to the bottom of this container */}
+          <ChatInput sendMessage={sendMessage} />
+        </div>
       </Flex>
     </AppShellComp>
   );

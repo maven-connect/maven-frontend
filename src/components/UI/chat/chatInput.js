@@ -16,7 +16,7 @@ export default function ChatInput({ sendMessage }) {
         }}
         autoComplete="off"
       >
-        <Group align="center" position="apart">
+        <Group position="center" pt={10}>
           <TextInput
             rightSection={
               <UnstyledButton type="submit">
@@ -25,7 +25,7 @@ export default function ChatInput({ sendMessage }) {
             }
             value={messageInput}
             onChange={(event) => setmessageInput(event.currentTarget.value)}
-            w={"90%"}
+            miw={"80%"}
             placeholder="Send message"
             size="md"
           />

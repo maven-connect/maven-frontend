@@ -244,7 +244,7 @@ export default function AppShellComp({ children }) {
         </Header>
       }
     >
-      {children}
+      <div>{children}</div>
     </AppShell>
   );
 }
