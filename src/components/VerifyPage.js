@@ -71,18 +71,18 @@ export default function VerifyPage() {
 
           <form>
             <Select
-              mt={10}
-              label="Branch"
-              w={320}
-              data={branches}
-              onChange={(val) => setSelectedBranch(val)}
-            />
-            <Select
               mt={25}
               label="Batch"
               w={320}
               data={["2018", "2019", "2020", "2021", "2022"]}
               onChange={(val) => setBatch(val)}
+            />
+            <Select
+              mt={10}
+              label="Branch"
+              w={320}
+              data={branches}
+              onChange={(val) => setSelectedBranch(val)}
             />
             <Button
               mt={10}
@@ -90,6 +90,7 @@ export default function VerifyPage() {
                 verifySubmit();
               }}
             >
+              
               Submit
             </Button>
           </form>

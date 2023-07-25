@@ -140,7 +140,7 @@ export default function AppShellComp({ children }) {
       })),
     },
   ];
-
+  QRCode
   const links = mockdata.map((item) => (
     <LinksGroup {...item} key={item.label} />
   ));

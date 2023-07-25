@@ -1,5 +1,5 @@
-import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
-import {getProfile} from "@/pages/api/api";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { getProfile } from "@/pages/api/api";
 
 export const fetchProfile = createAsyncThunk("profile", async () => {
   const response = await getProfile();
