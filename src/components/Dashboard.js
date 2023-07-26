@@ -1,6 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchGroups, selectGroups } from "@/features/groupSlice";
+import {
+  createNewGroup,
+  fetchGroups,
+  selectGroups,
+} from "@/features/groupSlice";
 import AppShellComp from "./UI/AppShell";
 import {
   Button,
@@ -12,17 +16,12 @@ import {
 } from "@mantine/core";
 import { selectProfile } from "@/features/profileSlice";
 import { useDisclosure } from "@mantine/hooks";
+import { Toaster, toast } from "react-hot-toast";
 
 export default function DashboardPage() {
   const groups = useSelector(selectGroups);
   const dispatch = useDispatch();
-  const { data: Profile } = useSelector(selectProfile);
-  const [opened, { open, close }] = useDisclosure(false);
-
-  useEffect(() => {
-    dispatch(fetchGroups());
-  }, [dispatch]);
-
+  const batches = ["2018", "2019", "2020", "2021", "2022"];
   const branches = [
     {
       value: "CS",
@@ -46,31 +45,83 @@ export default function DashboardPage() {
     },
   ];
 
+  const { data: Profile } = useSelector(selectProfile);
+  const [opened, { open, close }] = useDisclosure(false);
+  const [batch, setBatch] = useState(null);
+  const [branch, setbranch] = useState(null);
+  const [description, setdescription] = useState("");
+  const [isGroupCommon, setisGroupCommon] = useState(false);
+  const [groupName, setgroupName] = useState("");
+
+  useEffect(() => {
+    dispatch(fetchGroups());
+  }, [dispatch]);
+
+  async function createGroupSubmit() {
+    dispatch(
+      createNewGroup({
+        group_name: groupName,
+        group_branch: branch,
+        group_batch: batch,
+        description,
+      })
+    ).then((res) => {
+      if (res.payload) {
+        setBatch(null);
+        setbranch(null);
+        setdescription("");
+        setisGroupCommon(false);
+        setgroupName("");
+        close();
+      } else {
+        toast.error("Failed to create Group");
+      }
+    });
+  }
+
   return (
     <AppShellComp>
+      <Toaster position="bottom-right" />
       {Profile.is_userStaff && <Button onClick={open}>Create Group</Button>}
       <Modal opened={opened} onClose={close} title="Create Group" centered>
         <Flex direction={"column"} gap={10}>
-          <TextInput label="Group Name" />
+          <TextInput
+            label="Group Name"
+            value={groupName}
+            onChange={(el) => setgroupName(el.currentTarget.value)}
+          />
           <Select
             label="Batch"
-            data={["2018", "2019", "2020", "2021", "2022"]}
+            data={batches}
             maxDropdownHeight={100}
-            // onChange={(val) => setBatch(val)}
+            value={batch}
+            onChange={(val) => setBatch(val)}
+            placeholder="Pick one"
           />
           <Select
             label="Branch"
             data={branches}
             maxDropdownHeight={100}
-            // onChange={(val) => setSelectedBranch(val)}
+            value={branch}
+            onChange={(val) => setbranch(val)}
+            placeholder="Pick one"
           />
-          <TextInput label="Description" />
-          <Checkbox mt={10} label="Is Group common for whole Batch ?" />
+          <TextInput
+            label="Description"
+            value={description}
+            onChange={(el) => setdescription(el.currentTarget.value)}
+          />
+          <Checkbox
+            mt={10}
+            label="Is Group common for whole Batch ?"
+            checked={isGroupCommon}
+            onChange={(el) => setisGroupCommon(el.currentTarget.checked)}
+          />
           <Button
             mt={10}
-            // onClick={() => {
-            //   verifySubmit();
-            // }}
+            onClick={() => {
+              createGroupSubmit();
+            }}
             variant="light"
           >
             Submit

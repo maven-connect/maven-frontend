@@ -140,7 +140,7 @@ export default function AppShellComp({ children }) {
       })),
     },
   ];
-  QRCode
+
   const links = mockdata.map((item) => (
     <LinksGroup {...item} key={item.label} />
   ));
@@ -155,7 +155,8 @@ export default function AppShellComp({ children }) {
           width={{ base: 275 }}
           hiddenBreakpoint="sm"
           hidden={!opened}
-          height={500}
+          withBorder
+          // height={500}
           p="xs"
         >
           <Navbar.Section grow component={ScrollArea}>

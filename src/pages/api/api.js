@@ -113,6 +113,28 @@ const fetchUserMessages = async (groupName) => {
   return response;
 };
 
+const createGroup = async ({
+  group_name,
+  group_batch,
+  group_branch,
+  description,
+}) => {
+  const body = { name: group_name, batch: group_batch };
+  if (group_branch) {
+    body.branch = group_branch;
+  }
+
+  if (description) {
+    body.description = description;
+  }
+
+  const response = await postAPI(`/group/new`, body);
+  if (!response.ok) {
+    throw new Error("Failed to fetch Messages");
+  }
+  return response;
+};
+
 export {
   commonAPICall,
   getAPI,
@@ -125,4 +147,5 @@ export {
   verifyProfile,
   fetchUserGroups,
   fetchUserMessages,
+  createGroup,
 };
