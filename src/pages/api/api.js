@@ -105,8 +105,8 @@ const fetchUserGroups = async () => {
   return response;
 };
 
-const fetchUserMessages = async (groupName) => {
-  const response = await getAPI(`/group/${groupName}/messages`);
+const fetchGroupData = async (groupName) => {
+  const response = await getAPI(`/group/${groupName}/data`);
   if (!response.ok) {
     throw new Error("Failed to fetch Messages");
   }
@@ -135,6 +135,13 @@ const createGroup = async ({
   return response;
 };
 
+const getGroupParticipants = async (groupName) => {
+  const response = await getAPI(`/group/${groupName}/participants`);
+  if (!response.ok) {
+    throw new Error("Failed to fetch participants");
+  }
+  return response;
+};
 export {
   commonAPICall,
   getAPI,
@@ -146,6 +153,7 @@ export {
   googeLogin,
   verifyProfile,
   fetchUserGroups,
-  fetchUserMessages,
+  fetchGroupData,
   createGroup,
+  getGroupParticipants,
 };

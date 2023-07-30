@@ -64,14 +64,27 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-export function LinksGroup({ icon: Icon, label, links }) {
+export function LinksGroup({ icon: Icon, label, links, activeGroup }) {
   const { classes, theme } = useStyles();
   const hasLinks = Array.isArray(links);
   const [opened, setOpened] = useState(true);
   const ChevronIcon = theme.dir === "ltr" ? IconChevronRight : IconChevronLeft;
   const items = (hasLinks ? links : []).map((link) => (
     <Link key={link.label} style={{ textDecoration: "none" }} href={link.link}>
-      <Text className={classes.link}>{link.label}</Text>
+      <Text
+        className={classes.link}
+        style={{
+          backgroundColor:
+            link.label === activeGroup
+              ? theme.colorScheme === "dark"
+                ? theme.colors.blue[7]
+                : theme.colors.blue[2]
+              : "",
+          borderRadius: link.label === activeGroup ? "4px" : "0",
+        }}
+      >
+        {link.label}
+      </Text>
     </Link>
   ));
 

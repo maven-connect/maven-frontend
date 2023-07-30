@@ -36,7 +36,7 @@ export default function ChatMessage({ messageData }) {
         )}
       </Group>
       <Paper
-        shadow="lg"
+        shadow="xs"
         h={"min-content"}
         withBorder
         mx={30}

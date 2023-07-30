@@ -14,12 +14,14 @@ import {
   createStyles,
   rem,
   Button,
+  ActionIcon,
 } from "@mantine/core";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchGroups, selectGroups } from "@/features/groupSlice";
 import PageLoader from "./PageLoader";
 import {
   IconChevronDown,
+  IconInfoCircle,
   IconLogout,
   IconSettings,
   IconUser,
@@ -108,7 +110,7 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-export default function AppShellComp({ children }) {
+export default function AppShellComp({ groupTitle, children }) {
   const { data: groupList, status } = useSelector(selectGroups);
   const { data: profileData } = useSelector(selectProfile);
   // const [userMenuOpened, setUserMenuOpened] = useState(false);
@@ -116,6 +118,7 @@ export default function AppShellComp({ children }) {
   const [opened, setOpened] = useState(false);
   const dispatch = useDispatch();
   const router = useRouter();
+  const groupName = router.query.group_name || "";
 
   useEffect(() => {
     dispatch(fetchGroups());
@@ -142,7 +145,7 @@ export default function AppShellComp({ children }) {
   ];
 
   const links = mockdata.map((item) => (
-    <LinksGroup {...item} key={item.label} />
+    <LinksGroup {...item} key={item.label} activeGroup={groupName} />
   ));
 
   return (
@@ -195,6 +198,20 @@ export default function AppShellComp({ children }) {
                   </Text>
                 </Group>
               </Link>
+            </Group>
+            <Group>
+              {groupTitle ? (
+                <>
+                  <Text>{groupTitle}</Text>
+                  <Link href={`/group/${router.query.group_name}/info`}>
+                    <ActionIcon>
+                      <IconInfoCircle />
+                    </ActionIcon>
+                  </Link>
+                </>
+              ) : (
+                ""
+              )}
             </Group>
             <Menu
               width={260}

@@ -14,6 +14,7 @@ const socket = new WebSocket(process.env.NEXT_PUBLIC_BACKEND_SOCKET);
 
 export default function GroupPage({}) {
   const [SocketState, setSocketState] = useState(null);
+  const [socketMsgType, setSocketMsgType] = useState("MSG");
   const [socketData, setsocketData] = useState([]);
   const { data: profileData } = useSelector(selectProfile);
   const dispatch = useDispatch();
@@ -26,6 +27,7 @@ export default function GroupPage({}) {
         message: messageInput,
         groupName: router.query.group_name,
         sender: profileData.email,
+        type: socketMsgType,
       })
     );
   }
@@ -59,10 +61,20 @@ export default function GroupPage({}) {
   }
 
   return (
-    <AppShellComp>
-      <Flex direction="column" h="100%" style={{ position: "relative" }}>
-        <ChatHero socketData={socketData} chatId={router.query.group_name} />
-        <div style={{position:"fixed",bottom:"10px", width:"-webkit-fill-available"}}>
+    <AppShellComp groupTitle={router.query.group_name}>
+      <Flex direction="column" h="90%" style={{ position: "relative" }}>
+        <ChatHero
+          socketData={socketData}
+          setSocketMsgType={setSocketMsgType}
+          chatId={router.query.group_name}
+        />
+        <div
+          style={{
+            position: "fixed",
+            bottom: "10px",
+            width: "-webkit-fill-available",
+          }}
+        >
           {/* The flex: 1 and overflowY: auto ensure the chat content is scrollable */}
           {/* The ChatInput will stick to the bottom of this container */}
           <ChatInput sendMessage={sendMessage} />

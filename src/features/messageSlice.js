@@ -1,10 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { fetchUserMessages } from "@/pages/api/api";
+import { fetchGroupData } from "@/pages/api/api";
 
 export const fetchMessages = createAsyncThunk(
   "fetch/messages",
   async ({ groupName }) => {
-    const response = await fetchUserMessages(groupName);
+    const response = await fetchGroupData(groupName);
     return { groupName, data: response.data };
   }
 );
@@ -27,7 +27,7 @@ export const messageSlice = createSlice({
       })
       .addCase(fetchMessages.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.data[action.payload.groupName] = action.payload.data.messages;
+        state.data[action.payload.groupName] = action.payload.data;
       })
       .addCase(fetchMessages.rejected, (state, action) => {
         state.status = "failed";
