@@ -1,10 +1,14 @@
-import { Group, TextInput, UnstyledButton } from "@mantine/core";
-import { IconPaperclip, IconSend } from "@tabler/icons-react";
+import { Flex, Group, Select, TextInput, UnstyledButton } from "@mantine/core";
+import { IconSend } from "@tabler/icons-react";
 import React, { useState } from "react";
 
-export default function ChatInput({ sendMessage }) {
+export default function ChatInput({
+  sendMessage,
+  segmented,
+  ISSPER,
+  setISSPER,
+}) {
   const [messageInput, setmessageInput] = useState("");
-
   return (
     <>
       <form
@@ -16,7 +20,7 @@ export default function ChatInput({ sendMessage }) {
         }}
         autoComplete="off"
       >
-        <Group position="center" pt={10}>
+        <Flex justify={"flex-start"} px={25} gap={25} pt={10} wrap={"nowrap"}>
           <TextInput
             rightSection={
               <UnstyledButton type="submit">
@@ -25,12 +29,25 @@ export default function ChatInput({ sendMessage }) {
             }
             value={messageInput}
             onChange={(event) => setmessageInput(event.currentTarget.value)}
-            miw={"80%"}
+            w={"75%"}
             placeholder="Send message"
             size="md"
           />
-          <IconPaperclip />
-        </Group>
+          {segmented == "ISP" && (
+            <Select
+              w={"15%"}
+              miw={100}
+              size="md"
+              value={ISSPER}
+              onChange={(val) => setISSPER(val)}
+              data={[
+                { value: "ISS", label: "ISSUE" },
+                { value: "PER", label: "PERMISSION" },
+              ]}
+              styles={{ input: { fontSize: "0.9em" } }}
+            />
+          )}
+        </Flex>
       </form>
     </>
   );

@@ -19,6 +19,9 @@ export default function GroupPage({}) {
   const { data: profileData } = useSelector(selectProfile);
   const dispatch = useDispatch();
   const { data: groupList, status } = useSelector(selectGroups);
+  const [segmented, setSegmented] = useState("MSG");
+  const [ISSPER, setISSPER] = useState("ISS");
+
   const router = useRouter();
 
   function sendMessage(messageInput) {
@@ -28,6 +31,7 @@ export default function GroupPage({}) {
         groupName: router.query.group_name,
         sender: profileData.email,
         type: socketMsgType,
+        category: socketMsgType == "ISP" ? ISSPER : null,
       })
     );
   }
@@ -66,6 +70,8 @@ export default function GroupPage({}) {
         <ChatHero
           socketData={socketData}
           setSocketMsgType={setSocketMsgType}
+          segmented={segmented}
+          setSegmented={setSegmented}
           chatId={router.query.group_name}
         />
         <div
@@ -75,9 +81,12 @@ export default function GroupPage({}) {
             width: "-webkit-fill-available",
           }}
         >
-          {/* The flex: 1 and overflowY: auto ensure the chat content is scrollable */}
-          {/* The ChatInput will stick to the bottom of this container */}
-          <ChatInput sendMessage={sendMessage} />
+          <ChatInput
+            sendMessage={sendMessage}
+            segmented={segmented}
+            ISSPER={ISSPER}
+            setISSPER={setISSPER}
+          />
         </div>
       </Flex>
     </AppShellComp>
