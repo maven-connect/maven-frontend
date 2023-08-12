@@ -142,6 +142,36 @@ const getGroupParticipants = async (groupName) => {
   }
   return response;
 };
+
+const postLostandFound = async ({
+  itemName,
+  description,
+  imageFile,
+  selectedOption,
+}) => {
+  let formData = new FormData();
+  formData.append("name", itemName);
+  formData.append("description", description);
+  formData.append("image_url", imageFile);
+  formData.append("category", selectedOption);
+
+  const Headers = {
+    accept: "*/*",
+  };
+  console.log(itemName, description, imageFile, selectedOption);
+  console.log(formData);
+  const response = await commonAPICall(
+    `/lost-found/create`,
+    "POST",
+    formData,
+    Headers
+  );
+  if (!response.ok) {
+    throw new Error("Failed to fetch participants");
+  }
+  return response;
+};
+
 export {
   commonAPICall,
   getAPI,
@@ -156,4 +186,5 @@ export {
   fetchGroupData,
   createGroup,
   getGroupParticipants,
+  postLostandFound,
 };

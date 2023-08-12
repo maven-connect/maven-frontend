@@ -119,9 +119,14 @@ export default function AppShellComp({ groupTitle, children }) {
   const dispatch = useDispatch();
   const router = useRouter();
   const groupName = router.query.group_name || "";
+  const [selectedSection, setSelectedSection] = useState(null);
 
   useEffect(() => {
     dispatch(fetchGroups());
+    const savedSelectedSection = localStorage.getItem("selectedSection");
+    if (savedSelectedSection) {
+      setSelectedSection(savedSelectedSection);
+    }
   }, [dispatch]);
 
   function Logout() {
@@ -162,9 +167,30 @@ export default function AppShellComp({ groupTitle, children }) {
           // height={500}
           p="xs"
         >
-          <Navbar.Section grow component={ScrollArea}>
+          <Navbar.Section>
             <div>{links}</div>
           </Navbar.Section>
+          <Link
+            href={"/lost-found"}
+            style={{ color: "black", textDecoration: "none" }}
+          >
+            <Navbar.Section
+              style={{
+                padding: "9px",
+                margin: "2px",
+                borderRadius: "3px",
+                transition: "background-color 0.2s",
+                backgroundColor: selectedSection === "LandF" ? "#81aeff94" : "",
+                cursor: "pointer",
+              }}
+              onClick={() => {
+                setSelectedSection("LandF");
+                localStorage.setItem("selectedSection", "LandF");
+              }}
+            >
+              LOST and FOUND
+            </Navbar.Section>
+          </Link>
         </Navbar>
       }
       header={
@@ -193,9 +219,11 @@ export default function AppShellComp({ groupTitle, children }) {
                     src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
                     alt=""
                   />
-                  <Text fw={600} fz={"xl"} color="black">
-                    Maven
-                  </Text>
+                  <MediaQuery smallerThan="sm" styles={{ display: "none" }}>
+                    <Text fw={600} fz={"xl"} color="black">
+                      Maven
+                    </Text>
+                  </MediaQuery>
                 </Group>
               </Link>
             </Group>

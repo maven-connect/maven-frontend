@@ -3,6 +3,8 @@ import profileReducer from "./features/profileSlice";
 import groupReducer from "./features/groupSlice";
 import messageReducer from "./features/messageSlice";
 import groupParticipantsReducer from "./features/groupParticipantsSlice";
+import lostandfoundReducer from "./features/lostAndFoundSlice";
+
 export function makeStore() {
   return configureStore({
     reducer: {
@@ -10,6 +12,7 @@ export function makeStore() {
       group: groupReducer,
       message: messageReducer,
       groupParticipants: groupParticipantsReducer,
+      lostandfound: lostandfoundReducer,
     },
   });
 }
