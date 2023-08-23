@@ -41,8 +41,8 @@ const postAPI = async (PATH, DATA) => {
   return response;
 };
 
-const deleteAPI = async (PATH) => {
-  const response = await commonAPICall(PATH, "DELETE");
+const deleteAPI = async (PATH, DATA = null) => {
+  const response = await commonAPICall(PATH, "DELETE", DATA);
   try {
     response.data = await response.json();
   } catch (err) {
@@ -152,22 +152,50 @@ const postLostandFound = async ({
   let formData = new FormData();
   formData.append("name", itemName);
   formData.append("description", description);
-  formData.append("image_url", imageFile);
+  formData.append("image", imageFile);
   formData.append("category", selectedOption);
 
   const Headers = {
     accept: "*/*",
   };
-  console.log(itemName, description, imageFile, selectedOption);
-  console.log(formData);
   const response = await commonAPICall(
     `/lost-found/create`,
     "POST",
     formData,
     Headers
   );
+  try {
+    response.data = await response.json();
+  } catch (error) {
+    console.err(error);
+  }
   if (!response.ok) {
     throw new Error("Failed to fetch participants");
+  }
+  return response;
+};
+
+const getLostandFound = async () => {
+  const response = await getAPI(`/lost-found/all`);
+  if (!response.ok) {
+    throw new Error("Failed to fetch lost and found items");
+  }
+  return response;
+};
+
+const deleteLostandFound = async (id) => {
+  var serializedData = JSON.stringify(id);
+  const response = await deleteAPI(`/lost-found/delete`, serializedData);
+  if (!response.ok) {
+    throw new Error("Failed to delete lost and found items");
+  }
+  return response;
+};
+
+const contactLostAndFound = async (id) => {
+  const response = await postAPI(`/lost-found/contact`, {"id": id});
+  if (!response.ok) {
+    throw new Error("Failed to delete lost and found items");
   }
   return response;
 };
@@ -187,4 +215,7 @@ export {
   createGroup,
   getGroupParticipants,
   postLostandFound,
+  getLostandFound,
+  deleteLostandFound,
+  contactLostAndFound
 };

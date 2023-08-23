@@ -21,6 +21,7 @@ import { fetchGroups, selectGroups } from "@/features/groupSlice";
 import PageLoader from "./PageLoader";
 import {
   IconChevronDown,
+  IconCompass,
   IconInfoCircle,
   IconLogout,
   IconSettings,
@@ -188,7 +189,10 @@ export default function AppShellComp({ groupTitle, children }) {
                 localStorage.setItem("selectedSection", "LandF");
               }}
             >
-              LOST and FOUND
+              <Group ml={8}>
+                <IconCompass />
+                LOST and FOUND
+              </Group>
             </Navbar.Section>
           </Link>
         </Navbar>

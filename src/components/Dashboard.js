@@ -52,7 +52,7 @@ export default function DashboardPage() {
   const [description, setdescription] = useState("");
   const [isGroupCommon, setisGroupCommon] = useState(false);
   const [groupName, setgroupName] = useState("");
-
+  localStorage.setItem("selectedSection", "");
   useEffect(() => {
     dispatch(fetchGroups());
   }, [dispatch]);
