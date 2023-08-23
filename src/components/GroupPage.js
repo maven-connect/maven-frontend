@@ -21,6 +21,7 @@ export default function GroupPage({}) {
   const { data: groupList, status } = useSelector(selectGroups);
   const [segmented, setSegmented] = useState("MSG");
   const [ISSPER, setISSPER] = useState("ISS");
+  localStorage.setItem("selectedSection", "");
 
   const router = useRouter();
 

@@ -71,7 +71,7 @@ export default function ChatMessage({ messageData, segmented }) {
           <Text
             maw={300}
             style={{ wordWrap: "break-word" }}
-            fw={550}
+            fw={messageData.type === "ISP" ? 550 : 500}
             size={18}
             w={"max-content"}
           >

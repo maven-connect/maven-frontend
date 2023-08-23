@@ -190,7 +190,9 @@ export default function AppShellComp({ groupTitle, children }) {
               }}
             >
               <Group ml={8}>
-                <IconCompass />
+                <ActionIcon variant="light" color="blue">
+                  <IconCompass stroke={1.5} />
+                </ActionIcon>
                 LOST and FOUND
               </Group>
             </Navbar.Section>
