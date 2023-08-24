@@ -1,11 +1,18 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { fetchGroupData } from "@/pages/api/api";
+import { approveISP, fetchGroupData } from "@/pages/api/api";
 
 export const fetchMessages = createAsyncThunk(
   "fetch/messages",
   async ({ groupName }) => {
     const response = await fetchGroupData(groupName);
     return { groupName, data: response.data };
+  }
+);
+export const approveMessages = createAsyncThunk(
+  "fetch/approveMessages",
+  async (data) => {
+    const response = await approveISP(data);
+    return response['data'];
   }
 );
 
@@ -32,6 +39,14 @@ export const messageSlice = createSlice({
       .addCase(fetchMessages.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
+      })
+      .addCase(approveMessages.fulfilled, (state, action) => {
+        const changeIndex = state.data[action.payload.groupName][
+          "isp"
+        ].findIndex((el) => el.id == action.payload.id);
+        state.data[action.payload.groupName]["isp"][changeIndex] = {
+          ...action.payload,
+        };
       });
   },
 });

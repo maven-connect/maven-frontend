@@ -11,6 +11,7 @@ import {
   Text,
   Title,
 } from "@mantine/core";
+import { useRouter } from "next/router";
 import { useDisclosure } from "@mantine/hooks";
 import React, { useState } from "react";
 import { Toaster, toast } from "react-hot-toast";
@@ -42,6 +43,7 @@ const branches = [
 export default function VerifyPage() {
   const [selectedBranch, setSelectedBranch] = useState("CS");
   const [batch, setBatch] = useState("2021");
+  const router = useRouter();
   const dispatch = useDispatch();
 
   const verifySubmit = () => {

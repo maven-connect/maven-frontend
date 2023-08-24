@@ -1,12 +1,21 @@
+import { approveMessages } from "@/features/messageSlice";
 import { selectProfile } from "@/features/profileSlice";
-import { Avatar, Badge, Flex, Group, Paper, Text } from "@mantine/core";
+import { Avatar, Badge, Button, Flex, Group, Paper, Text } from "@mantine/core";
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function ChatMessage({ messageData, segmented }) {
   const { data: profileData } = useSelector(selectProfile);
+  const dispatch = useDispatch();
 
   const isSentByCurrentUser = messageData.user === profileData.email;
+  const isUserStaff = profileData.is_userStaff;
+
+  const handleApproveClick = () => {
+    dispatch(
+      approveMessages({ groupName: messageData.groupName, id: messageData.id })
+    );
+  };
   return (
     <>
       <Group style={{ position: "relative", right: "0px", top: "20px" }}>
@@ -89,6 +98,23 @@ export default function ChatMessage({ messageData, segmented }) {
               minute: "2-digit",
             })}
           </Text>
+          <Group position="apart">
+            {messageData.type === "ISP" && (
+              <Text size="sm" color={messageData.accepted ? "green" : "red"}>
+                {messageData.accepted ? "Accepted" : "Not Accepted"}
+              </Text>
+            )}
+            {isUserStaff && messageData.type === "ISP" && !messageData.accepted && (
+              <Button
+                variant="outline"
+                size="xs"
+                onClick={() => handleApproveClick()}
+                style={{ alignSelf: "flex-end", marginTop: "8px" }}
+              >
+                Approve
+              </Button>
+            )}
+          </Group>
         </Flex>
       </Paper>
     </>

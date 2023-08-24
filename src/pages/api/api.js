@@ -199,6 +199,13 @@ const contactLostAndFound = async (id) => {
   }
   return response;
 };
+const approveISP = async ({groupName, id}) => {
+  const response = await postAPI(`/group/${groupName}/approve`, {id});
+  if (!response.ok) {
+    throw new Error("Failed to delete lost and found items");
+  }
+  return response;
+};
 
 const markDayAttendance = async (
   group_name,
@@ -245,6 +252,7 @@ export {
   getLostandFound,
   deleteLostandFound,
   contactLostAndFound,
+  approveISP,
   markDayAttendance,
   checkDayAttendance,
 };
