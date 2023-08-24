@@ -193,9 +193,36 @@ const deleteLostandFound = async (id) => {
 };
 
 const contactLostAndFound = async (id) => {
-  const response = await postAPI(`/lost-found/contact`, {"id": id});
+  const response = await postAPI(`/lost-found/contact`, { id: id });
   if (!response.ok) {
     throw new Error("Failed to delete lost and found items");
+  }
+  return response;
+};
+
+const markDayAttendance = async (
+  group_name,
+  year,
+  month,
+  date,
+  absent_list
+) => {
+  const response = await postAPI(
+    `/group/mark-attendance/${group_name}/${year}/${month}/${date}/`,
+    { absent: absent_list }
+  );
+  if (!response.ok) {
+    throw new Error("Attendance Failed");
+  }
+  return response;
+};
+
+const checkDayAttendance = async (group_id, year, month, date) => {
+  const response = await getAPI(
+    `/group/group-attendance/${group_id}/${year}/${month}/${date}/`
+  );
+  if (!response.ok) {
+    throw new Error("Attendance Failed");
   }
   return response;
 };
@@ -217,5 +244,7 @@ export {
   postLostandFound,
   getLostandFound,
   deleteLostandFound,
-  contactLostAndFound
+  contactLostAndFound,
+  markDayAttendance,
+  checkDayAttendance,
 };

@@ -11,8 +11,10 @@ import {
   Text,
   Title,
 } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 import React, { useState } from "react";
 import { Toaster, toast } from "react-hot-toast";
+import { useDispatch } from "react-redux";
 
 const branches = [
   {
@@ -40,11 +42,13 @@ const branches = [
 export default function VerifyPage() {
   const [selectedBranch, setSelectedBranch] = useState("CS");
   const [batch, setBatch] = useState("2021");
+  const dispatch = useDispatch();
 
   const verifySubmit = () => {
     verifyProfile(selectedBranch, batch).then((res) => {
+      console.log(res.ok);
       if (res.ok) {
-        fetchProfile();
+        dispatch(fetchProfile());
       } else {
         // toast.error(res.data.error);
       }
@@ -90,7 +94,6 @@ export default function VerifyPage() {
                 verifySubmit();
               }}
             >
-              
               Submit
             </Button>
           </form>

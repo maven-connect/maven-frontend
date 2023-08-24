@@ -193,7 +193,7 @@ export default function AppShellComp({ groupTitle, children }) {
                 <ActionIcon variant="light" color="blue">
                   <IconCompass stroke={1.5} />
                 </ActionIcon>
-                LOST and FOUND
+                <Text size={"sm"}>Lost / Found</Text>
               </Group>
             </Navbar.Section>
           </Link>
