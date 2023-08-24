@@ -1,17 +1,17 @@
-import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
-import {getProfile} from '@/pages/api/api';
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { getProfile } from "@/pages/api/api";
 
-export const fetchProfile = createAsyncThunk('profile', async () => {
+export const fetchProfile = createAsyncThunk("profile", async () => {
   const response = await getProfile();
   return response.data;
 });
 
 export const profileSlice = createSlice({
-  name: 'profile',
+  name: "profile",
 
   initialState: {
     data: {},
-    status: 'idle',
+    status: "idle",
     error: null,
   },
 
@@ -20,14 +20,14 @@ export const profileSlice = createSlice({
   extraReducers(builder) {
     builder
       .addCase(fetchProfile.pending, (state) => {
-        state.status = 'loading';
+        state.status = "loading";
       })
       .addCase(fetchProfile.fulfilled, (state, action) => {
-        state.status = 'succeeded';
+        state.status = "succeeded";
         state.data = action.payload;
       })
       .addCase(fetchProfile.rejected, (state, action) => {
-        state.status = 'failed';
+        state.status = "failed";
         state.error = action.error.message;
       });
   },
