@@ -165,7 +165,7 @@ function GroupInfoPage() {
           Check
         </Button>
         <ScrollArea mt={10} mah={300}>
-          {absent && <Text color="red">List of User's Absent:</Text>}
+          {absent && <Text color="red">List of User&apos;s Absent:</Text>}
           {absent &&
             absent.map((el, index) => (
               <Paper key={index} withBorder my={5} p={5}>

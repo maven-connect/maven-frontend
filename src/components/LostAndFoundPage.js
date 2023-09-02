@@ -204,7 +204,7 @@ function LostAndFoundPage() {
             </Text>
             {selectedItem.contacts &&
               selectedItem.contacts.map((el) => (
-                <Paper withBorder shadow="md">
+                <Paper withBorder shadow="md" key={el}>
                   <Group position="apart" p={10}>
                     <Text>{el.email}</Text>
                     <Text>{el.branch}</Text>

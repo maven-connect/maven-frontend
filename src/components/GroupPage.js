@@ -10,9 +10,10 @@ import { useRouter } from "next/router";
 import { fetchGroups, selectGroups } from "@/features/groupSlice";
 import PageLoader from "./UI/PageLoader";
 
-const socket = new WebSocket(process.env.NEXT_PUBLIC_BACKEND_SOCKET);
+// const socket = new WebSocket(process.env.NEXT_PUBLIC_BACKEND_SOCKET);
 
 export default function GroupPage({}) {
+  const [socket, setSocket] = useState(null);
   const [SocketState, setSocketState] = useState(null);
   const [socketMsgType, setSocketMsgType] = useState("MSG");
   const [socketData, setsocketData] = useState([]);
@@ -24,6 +25,35 @@ export default function GroupPage({}) {
   localStorage.setItem("selectedSection", "");
 
   const router = useRouter();
+
+  useEffect(() => {
+    // Create the WebSocket connection here, inside the useEffect
+    const newSocket = new WebSocket(process.env.NEXT_PUBLIC_BACKEND_SOCKET);
+
+    // Set up the WebSocket event handlers
+    newSocket.onmessage = function (e) {
+      const data = JSON.parse(e.data);
+      if (data.message.groupName === router.query.group_name) {
+        setsocketData((prevData) => [...prevData, data]);
+      }
+    };
+    setSocket(newSocket);
+    // Clean up the WebSocket connection when the component unmounts
+    return () => {
+      newSocket.close();
+    };
+  }, [router.query.group_name]);
+
+  useEffect(() => {
+    if (router.query.group_name && status === "succeeded") {
+      setsocketData([]);
+      dispatch(fetchMessages({ groupName: router.query.group_name }));
+    }
+  }, [router.query, status, dispatch]);
+
+  useEffect(() => {
+    dispatch(fetchGroups());
+  }, [dispatch]);
 
   function sendMessage(messageInput) {
     socket.send(
@@ -37,23 +67,12 @@ export default function GroupPage({}) {
     );
   }
 
-  socket.onmessage = function (e) {
-    const data = JSON.parse(e.data);
-    if (data.message.groupName === router.query.group_name) {
-      setsocketData((pre) => [...pre, data]);
-    }
-  };
-
-  useEffect(() => {
-    if (router.query.group_name && status === "succeeded") {
-      setsocketData([]);
-      dispatch(fetchMessages({ groupName: router.query.group_name }));
-    }
-  }, [router.query, status, dispatch]);
-
-  useEffect(() => {
-    dispatch(fetchGroups());
-  }, [dispatch]);
+  // socket.onmessage = function (e) {
+  //   const data = JSON.parse(e.data);
+  //   if (data.message.groupName === router.query.group_name) {
+  //     setsocketData((pre) => [...pre, data]);
+  //   }
+  // };
 
   if (!router.isReady || !groupList.length) {
     return <PageLoader />;

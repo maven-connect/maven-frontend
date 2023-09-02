@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "docker-build": "docker build -t maven-frontend ./",
+    "docker-run": "docker run -p 3000:3000 -d maven-frontend"
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
