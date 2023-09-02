@@ -111,9 +111,10 @@ export default function HeroSection() {
             </Text>
           </Group>
           <Link href={"/login"}>
-          <Button radius="lg" variant="light">
-            Login
-          </Button></Link>
+            <Button radius="lg" variant="light">
+              Login
+            </Button>
+          </Link>
         </div>
       </Header>
       <Container size={700} pt="5rem" className={classes.inner}>
@@ -127,28 +128,18 @@ export default function HeroSection() {
           >
             fully featured
           </Text>{" "}
-          React components and hooks library
+          Institute Management Portal
         </h1>
 
         <Text className={classes.description} color="dimmed">
-          Build fully functional accessible web applications with ease – Mantine
-          includes more than 100 customizable components and hooks to cover you
-          in any situation
+          Elevate Education, Simplify Administration: Empowering Institutes
+          through Seamless Management
         </Text>
 
         <Group className={classes.controls}>
           <Button
-            size="xl"
-            className={classes.control}
-            variant="gradient"
-            gradient={{ from: "blue", to: "cyan" }}
-          >
-            Get started
-          </Button>
-
-          <Button
             component="a"
-            href="https://github.com/mantinedev/mantine"
+            href="https://github.com/maven-connect/maven-frontend"
             size="xl"
             variant="default"
             className={classes.control}
@@ -156,9 +147,7 @@ export default function HeroSection() {
             GitHub
           </Button>
         </Group>
-        
       </Container>
-      
     </div>
   );
 }

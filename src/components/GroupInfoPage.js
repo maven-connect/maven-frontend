@@ -27,7 +27,12 @@ import { IconCalendar } from "@tabler/icons-react";
 import { useDisclosure } from "@mantine/hooks";
 import { DatePicker } from "@mantine/dates";
 import { selectProfile } from "@/features/profileSlice";
-import { checkDayAttendance, markDayAttendance } from "@/pages/api/api";
+import {
+  checkDayAttendance,
+  getUserAttendance,
+  markDayAttendance,
+} from "@/pages/api/api";
+import { Toaster, toast } from "react-hot-toast";
 
 function GroupInfoPage() {
   const { data: groupList, status } = useSelector(selectGroups);
@@ -50,6 +55,11 @@ function GroupInfoPage() {
 
   const [searchValue, setSearchValue] = useState([]);
 
+  const [getAttendance, { open: openAtt, close: closeAtt }] =
+    useDisclosure(false);
+
+  const [absentStudentData, setabsentStudentData] = useState(null);
+
   useEffect(() => {
     groupName && dispatch(fetchGroupParticipants({ groupName }));
   }, [dispatch, groupName]);
@@ -65,7 +75,9 @@ function GroupInfoPage() {
         date.getDate(),
         searchValue
       );
-      console.log(response);
+      if (response.ok) {
+        toast.success("Submitted Successfully");
+      }
     } catch (error) {
       console.log(error);
     }
@@ -88,13 +100,24 @@ function GroupInfoPage() {
     }
   };
 
+  const absentData = async () => {
+    const { data } = await getUserAttendance(groupData.id);
+    setabsentStudentData(data.absent);
+    openAtt();
+  };
+
   return (
     <AppShellComp>
+      <Toaster position="bottom-right" />
       {participantStatus === "succeeded" && (
         <Modal
           centered
           opened={opened}
-          onClose={close}
+          onClose={() => {
+            close();
+            setAttendanceDate(new Date());
+            setSearchValue([]);
+          }}
           title={"Group Attendance"}
           size={"xl"}
           closeOnClickOutside={false}
@@ -176,6 +199,29 @@ function GroupInfoPage() {
             ))}
         </ScrollArea>
       </Modal>
+      <Modal
+        centered
+        opened={getAttendance}
+        onClose={() => {
+          closeAtt();
+          setabsentStudentData(null);
+        }}
+        title="Attendance"
+        size={"xl"}
+      >
+        <Text align="center" size={"lg"}>
+          Absent on Dates:
+        </Text>
+
+        <Group p={15} position="center">
+          {absentStudentData &&
+            absentStudentData.map((item, index) => (
+              <Badge key={index} size="lg" color="red">
+                {item}
+              </Badge>
+            ))}
+        </Group>
+      </Modal>
       <Paper withBorder>
         <Center>
           <Text size={"xl"}>{groupName}</Text>
@@ -190,6 +236,13 @@ function GroupInfoPage() {
                 Mark Attendance
               </Button>
               <Button onClick={openCheck}>Check Attendance</Button>
+            </Group>
+          )}
+          {profile.email !== groupData?.admin && (
+            <Group>
+              <Button onClick={absentData} color="teal">
+                Get attendance
+              </Button>
             </Group>
           )}
         </Group>

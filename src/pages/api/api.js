@@ -199,8 +199,8 @@ const contactLostAndFound = async (id) => {
   }
   return response;
 };
-const approveISP = async ({groupName, id}) => {
-  const response = await postAPI(`/group/${groupName}/approve`, {id});
+const approveISP = async ({ groupName, id }) => {
+  const response = await postAPI(`/group/${groupName}/approve`, { id });
   if (!response.ok) {
     throw new Error("Failed to delete lost and found items");
   }
@@ -234,6 +234,14 @@ const checkDayAttendance = async (group_id, year, month, date) => {
   return response;
 };
 
+const getUserAttendance = async (group_id) => {
+  const response = await getAPI(`/group/user-attendance/${group_id}/`);
+  if (!response.ok) {
+    throw new Error("Attendance Failed");
+  }
+  return response;
+};
+
 export {
   commonAPICall,
   getAPI,
@@ -255,4 +263,5 @@ export {
   approveISP,
   markDayAttendance,
   checkDayAttendance,
+  getUserAttendance,
 };
